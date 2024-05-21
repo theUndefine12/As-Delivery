@@ -40,7 +40,6 @@ export class AuthService {
 
         await user.save()
 
-
         const favorite = new this.Favorite({owner: user.id})
         await favorite.save()
 
@@ -50,6 +49,7 @@ export class AuthService {
 
         const notice = new this.Notice({owner: user.id})
         await notice.save()
+
         // await this.eskiz.sendSMS(data.phone)
         return 'Go though Otp'
     }
@@ -143,13 +143,15 @@ export class AuthService {
         const user = new this.User({username: fake.username, phone: fake.phone, password: fake.password})
         await user.save()
 
-        // Favorite
         const favorite = new this.Favorite({owner: user.id})
         await favorite.save()
 
         // Basket
         const basket = new this.Basket({owner: user.id})
         await basket.save()
+
+        const notice = new this.Notice({owner: user.id})
+        await notice.save()
 
         await this.Fake.findByIdAndDelete(fake.id)
         return await this.issueToken(user.id)
@@ -170,6 +172,11 @@ export class AuthService {
         return {
             refreshToken, accesToken
         }
+    }
+
+    async destroyUser(username: string) {
+        const user = await this.User.findOne({username: username})
+        await this.User.findByIdAndDelete(user.id)
     }
 }
 

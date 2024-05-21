@@ -40,6 +40,7 @@ import { Notice, noticeSchema } from 'src/schemas/user/notice.schema';
       {name: Notice.name, schema: noticeSchema}
     ])
   ],
+  exports: [AuthService]
 })
 
 export class AuthModule {}
